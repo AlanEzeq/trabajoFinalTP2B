@@ -1,0 +1,337 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Esta es la documentación del uso de la Rest-API       Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.",
+    "version": "1.0.0",
+    "title": "Swagger Movie REST-API",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "",
+  "tags": [
+    {
+      "name": "movie",
+      "description": "Películas de MongoDB"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/movie": {
+      "post": {
+        "tags": [
+          "Movie"
+        ],
+        "summary": "Agregar una pelicula a la base",
+        "description": "",
+        "operationId": "addPet",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Película a ser agregada",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Movie"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "schema": {
+              "$ref": "#/definitions/Movie"
+            }
+          },
+          "500": {
+            "description": "Error general del servicio Rest."
+          }
+        }
+      }
+    },
+    "/movies": {
+      "get": {
+        "tags": [
+          "Movie"
+        ],
+        "summary": "Trae todas las peliculas",
+        "description": "Visualiza todas las películas paginando las mismas y con una cantidad (Defecto 10, Máximo 200) de películas por página",
+        "operationId": "busquedaPaginada",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página a buscar (Defecto 0)",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Límite o cantidad de películas por página (Defecto 10) ",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Movie"
+              }
+            }
+          },
+          "400": {
+            "description": "Status inválido"
+          },
+          "500": {
+            "description": "Error general del servicio Rest."
+          }
+        }
+      }
+    },
+    "/movie/{MovieId}": {
+      "get": {
+        "tags": [
+          "Movie"
+        ],
+        "summary": "Buscar película por ID",
+        "description": "Devuelve una película",
+        "operationId": "getMovieById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "MovieId",
+            "in": "path",
+            "description": "ID de la película a buscar",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "schema": {
+              "$ref": "#/definitions/Movie"
+            }
+          },
+          "404": {
+            "description": "No se encontró la película"
+          },
+          "500": {
+            "description": "Error general del servicio Rest. Tip: fijarse si el ID es válido."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Movie"
+        ],
+        "summary": "Modificación de una película",
+        "description": "",
+        "operationId": "updateMovie",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "MovieId",
+            "in": "path",
+            "description": "ID de la película a modificar",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Pelicula a ser modificada",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Movie"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Movie"
+              }
+            }
+          },
+          "400": {
+            "description": "ID de película inválido."
+          },
+          "404": {
+            "description": "Película no encontrada."
+          },
+          "500": {
+            "description": "Error general del servicio Rest."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Movie"
+        ],
+        "summary": "Elimina un película",
+        "description": "Elimina una película por su ID",
+        "operationId": "deleteMovie",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "MovieId",
+            "in": "path",
+            "description": "ID de la película a eliminar",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Película no encontrada"
+          },
+          "500": {
+            "description": "Error general del servicio Rest. Tip: fijarse si el ID es válido."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Movie": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "runtime": {
+          "type": "integer"
+        },
+        "released": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "poster": {
+          "type": "string"
+        },
+        "plot": {
+          "type": "string"
+        },
+        "fullplot": {
+          "type": "string"
+        },
+        "lastupdated": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "type": "string"
+        },
+        "directors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "countries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "genres": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cast": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "imdb": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "rating": {
+              "type": "number"
+            },
+            "votes": {
+              "type": "number"
+            }
+          }
+        },
+        "tomatoes": {
+          "type": "object",
+          "properties": {
+            "viewer": {
+              "type": "object",
+              "properties": {
+                "rating": {
+                  "type": "number"
+                },
+                "numReviews": {
+                  "type": "number"
+                },
+                "meter": {
+                  "type": "number"
+                }
+              }
+            },
+            "lastUpdated": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "num_mflix_comments": {
+          "type": "number"
+        }
+      },
+      "xml": {
+        "name": "Order"
+      }
+    },
+    "externalDocs": {
+      "description": "Find out more about Swagger",
+      "url": "http://swagger.io"
+    }
+  }
+}
